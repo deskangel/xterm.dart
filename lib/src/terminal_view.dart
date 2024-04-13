@@ -40,6 +40,9 @@ class TerminalView extends StatefulWidget {
     this.mouseCursor = SystemMouseCursors.text,
     this.keyboardType = TextInputType.emailAddress,
     this.keyboardAppearance = Brightness.dark,
+    this.autocorrect = false,
+    this.enableSuggestions = false,
+    this.enableIMEPersonalizedLearning = false,
     this.cursorType = TerminalCursorType.block,
     this.alwaysShowCursor = false,
     this.deleteDetection = false,
@@ -106,6 +109,26 @@ class TerminalView extends StatefulWidget {
   ///
   /// This setting is only honored on iOS devices.
   final Brightness keyboardAppearance;
+
+  /// Whether to enable autocorrection.
+  final bool autocorrect;
+
+  /// Whether to show input suggestions as the user types.
+  ///
+  /// This flag only affects Android. On iOS, suggestions are tied directly to
+  /// [autocorrect], so that suggestions are only shown when [autocorrect] is
+  /// true. On Android autocorrection and suggestion are controlled separately.
+  ///
+  /// ideskangel 2024-04-14: This flag affects the appearance of GBoard.
+  final bool enableSuggestions;
+
+  /// Whether to enable that the IME update personalized data such as typing
+  /// history and user dictionary data.
+  ///
+  /// This flag only affects Android. On iOS, there is no equivalent flag.
+  ///
+  /// ideskangel 2024-04-14: This flag affects the appearance of GBoard.
+  final bool enableIMEPersonalizedLearning;
 
   /// The type of cursor to use. [TerminalCursorType.block] by default.
   final TerminalCursorType cursorType;
@@ -254,6 +277,9 @@ class TerminalViewState extends State<TerminalView> {
         autofocus: widget.autofocus,
         inputType: widget.keyboardType,
         keyboardAppearance: widget.keyboardAppearance,
+        autocorrect: widget.autocorrect,
+        enableSuggestions: widget.enableSuggestions,
+        enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
         deleteDetection: widget.deleteDetection,
         onInsert: _onInsert,
         onDelete: () {

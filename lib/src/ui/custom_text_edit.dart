@@ -18,6 +18,9 @@ class CustomTextEdit extends StatefulWidget {
     this.inputType = TextInputType.text,
     this.inputAction = TextInputAction.newline,
     this.keyboardAppearance = Brightness.light,
+    this.autocorrect = false,
+    this.enableSuggestions = false,
+    this.enableIMEPersonalizedLearning = false,
     this.deleteDetection = false,
   });
 
@@ -44,6 +47,12 @@ class CustomTextEdit extends StatefulWidget {
   final TextInputAction inputAction;
 
   final Brightness keyboardAppearance;
+
+  final bool autocorrect;
+
+  final bool enableSuggestions;
+
+  final bool enableIMEPersonalizedLearning;
 
   final bool deleteDetection;
 
@@ -163,9 +172,9 @@ class CustomTextEditState extends State<CustomTextEdit> with TextInputClient {
         inputType: widget.inputType,
         inputAction: widget.inputAction,
         keyboardAppearance: widget.keyboardAppearance,
-        autocorrect: false,
-        enableSuggestions: false,
-        enableIMEPersonalizedLearning: false,
+        autocorrect: widget.autocorrect,
+        enableSuggestions: widget.enableSuggestions,
+        enableIMEPersonalizedLearning: widget.enableIMEPersonalizedLearning,
       );
 
       _connection = TextInput.attach(this, config);
