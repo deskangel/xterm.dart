@@ -240,6 +240,7 @@ class Terminal with Observable implements TerminalState, EscapeHandler {
     bool shift = false,
     bool alt = false,
     bool ctrl = false,
+    String? text,
   }) {
     final output = inputHandler?.call(
       TerminalKeyboardEvent(
@@ -250,6 +251,7 @@ class Terminal with Observable implements TerminalState, EscapeHandler {
         state: this,
         altBuffer: isUsingAltBuffer,
         platform: platform,
+        keyText: text,
       ),
     );
 

@@ -25,6 +25,8 @@ class TerminalKeyboardEvent {
 
   final TerminalTargetPlatform platform;
 
+  String? keyText;
+
   TerminalKeyboardEvent({
     required this.key,
     required this.shift,
@@ -33,6 +35,7 @@ class TerminalKeyboardEvent {
     required this.state,
     required this.altBuffer,
     required this.platform,
+    this.keyText,
   });
 
   TerminalKeyboardEvent copyWith({
@@ -43,6 +46,7 @@ class TerminalKeyboardEvent {
     TerminalState? state,
     bool? altBuffer,
     TerminalTargetPlatform? platform,
+    String? keyText,
   }) {
     return TerminalKeyboardEvent(
       key: key ?? this.key,
@@ -52,6 +56,7 @@ class TerminalKeyboardEvent {
       state: state ?? this.state,
       altBuffer: altBuffer ?? this.altBuffer,
       platform: platform ?? this.platform,
+      keyText: keyText ?? this.keyText,
     );
   }
 }
