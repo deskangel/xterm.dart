@@ -20,6 +20,8 @@ import 'package:xterm/src/core/tabs.dart';
 import 'package:xterm/src/utils/ascii.dart';
 import 'package:xterm/src/utils/circular_buffer.dart';
 
+typedef OnTerminalResizeFunc = void Function(int width, int height, int pixelWidth, int pixelHeight);
+
 /// [Terminal] is an interface to interact with command line applications. It
 /// translates escape sequences from the application into updates to the
 /// [buffer] and events such as [onTitleChange] or [onBell], as well as
@@ -48,8 +50,7 @@ class Terminal with Observable implements TerminalState, EscapeHandler {
   void Function(String data)? onOutput;
 
   /// Function that is called when the dimensions of the terminal change.
-  void Function(int width, int height, int pixelWidth, int pixelHeight)?
-      onResize;
+  OnTerminalResizeFunc? onResize;
 
   /// The [TerminalInputHandler] used by this terminal. [defaultInputHandler] is
   /// used when not specified. User of this class can provide their own
@@ -348,6 +349,8 @@ class Terminal with Observable implements TerminalState, EscapeHandler {
     return false;
   }
 
+  int? lastPixelWidth;
+  int? lastPixelHeight;
   /// Resize the terminal screen. [newWidth] and [newHeight] should be greater
   /// than 0. Text reflow is currently not implemented and will be avaliable in
   /// the future.
@@ -361,6 +364,8 @@ class Terminal with Observable implements TerminalState, EscapeHandler {
     newWidth = max(newWidth, 1);
     newHeight = max(newHeight, 1);
 
+    lastPixelWidth = pixelWidth;
+    lastPixelHeight = pixelHeight;
     onResize?.call(newWidth, newHeight, pixelWidth ?? 0, pixelHeight ?? 0);
 
     //we need to resize both buffers so that they are ready when we switch between them
@@ -715,11 +720,13 @@ class Terminal with Observable implements TerminalState, EscapeHandler {
   @override
   void useAltBuffer() {
     _buffer = _altBuffer;
+    onResize?.call(viewWidth, viewHeight, lastPixelWidth ?? 0, lastPixelHeight ?? 0);
   }
 
   @override
   void useMainBuffer() {
     _buffer = _mainBuffer;
+    onResize?.call(viewWidth, viewHeight, lastPixelWidth ?? 0, lastPixelHeight ?? 0);
   }
 
   @override
